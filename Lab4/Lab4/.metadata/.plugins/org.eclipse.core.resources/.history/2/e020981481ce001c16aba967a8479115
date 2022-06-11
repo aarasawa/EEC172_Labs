@@ -1,0 +1,178 @@
+// Names:
+// Alexander Arasawa
+// Jiawei Zheng
+
+// Standard includes
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+
+// Driverlib includes
+#include "hw_types.h"
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_common_reg.h"
+#include "interrupt.h"
+#include "hw_apps_rcm.h"
+#include "prcm.h"
+#include "spi.h"
+#include "rom.h"
+#include "rom_map.h"
+#include "prcm.h"
+#include "gpio.h"
+#include "utils.h"
+#include "systick.h"
+#include "hw_timer.h"
+#include "uart.h"
+#include "timer.h"
+#include "timer_if.h"
+
+// Common interface includes
+#include "uart_if.h"
+#include "pin_mux_config.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_SSD1351.h"
+
+//bit rate
+#define SPI_IF_BIT_RATE  400000
+
+// Remote definitions
+#define zero 685179135
+#define one 685211775
+#define two 685195455
+#define three 685228095
+#define four 685183215
+#define five 685215855
+#define six 685199535
+#define seven 685232175
+#define eight 685181175
+#define nine 685213815
+#define mute 685201575
+#define volumedown 685185255
+#define scrollup 685230135
+#define scrolldown 685197495
+
+// Color definitions
+#define BLACK 0x0000
+#define BLUE 0x001F
+#define GREEN 0x07E0
+#define CYAN 0x07FF
+#define RED 0xF800
+#define MAGENTA 0xF81F
+#define YELLOW 0xFFE0
+#define WHITE 0xFFFF
+
+#if defined(ccs)
+extern void (*const g_pfnVectors[])(void);
+#endif
+#if defined(ewarm)
+extern uVectorEntry __vector_table;
+#endif
+
+typedef struct PinSetting
+{
+        unsigned long port;
+        unsigned int pin;
+} PinSetting;
+
+static PinSetting pin8 = {.port = GPIOA1_BASE, .pin = 0x1}; //ADC CS
+
+static void
+BoardInit(void)
+{
+/* In case of TI-RTOS vector table is initialize by OS itself */
+#ifndef USE_TIRTOS
+        //
+        // Set vector table base
+        //
+#if defined(ccs)
+        MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
+#endif
+#if defined(ewarm)
+        MAP_IntVTableBaseSet((unsigned long)&__vector_table);
+#endif
+#endif
+        //
+        // Enable Processor
+        //
+        MAP_IntMasterEnable();
+        MAP_IntEnable(FAULT_SYSTICK);
+
+        PRCMCC3200MCUInit();
+}
+
+void main()
+{
+        //Board initilization
+        BoardInit();
+
+        //configure pins
+        PinMuxConfig();
+
+        //enable clk for uart1 and uart0
+        PRCMPeripheralClkEnable(PRCM_UARTA1, PRCM_RUN_MODE_CLK);
+        PRCMPeripheralClkEnable(PRCM_UARTA0, PRCM_RUN_MODE_CLK);
+
+        //configure bit rate and enable uart1 and uart0
+        UARTConfigSetExpClk(UARTA1_BASE, 80000000, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+        UART_CONFIG_PAR_NONE));
+        UARTConfigSetExpClk(UARTA0_BASE, 80000000, 115200, (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+        UART_CONFIG_PAR_NONE));
+        UARTEnable(UARTA1_BASE);
+        UARTEnable(UARTA0_BASE);
+
+        //for uart1, must disable DMA
+        UARTDMADisable(UARTA1_BASE, (UART_DMA_RX | UART_DMA_TX));
+        UARTFIFODisable(UARTA1_BASE) ;
+
+        InitTerm();
+
+        ClearTerm();
+
+        //enable clk for spi
+        MAP_PRCMPeripheralClkEnable(PRCM_GSPI,PRCM_RUN_MODE_CLK);
+
+        //reset spi
+        MAP_SPIReset(GSPI_BASE);
+        MAP_PRCMPeripheralReset(PRCM_GSPI);
+
+        Message("\t\t****************************************************\n\r");
+        Message("\t\t\tLab4\n\r");
+        Message("\t\t ****************************************************\n\r");
+        Message("\n\n\n\r");
+
+        //configure SPI interface
+        MAP_SPIConfigSetExpClk(GSPI_BASE,MAP_PRCMPeripheralClockGet(PRCM_GSPI),
+                         SPI_IF_BIT_RATE,SPI_MODE_MASTER,SPI_SUB_MODE_0,
+                         (SPI_SW_CTRL_CS |
+                         SPI_4PIN_MODE |
+                         SPI_TURBO_OFF |
+                         SPI_CS_ACTIVEHIGH |
+                         SPI_WL_8));
+
+        //enable SPI for communication
+        MAP_SPIEnable(GSPI_BASE);
+
+        //init adafruit for oled
+        Adafruit_Init();
+
+        //clear oled
+        fillScreen(BLACK);
+
+        while (1)
+        {
+            unsigned char data0;
+            unsigned char data1;
+            GPIOPinWrite(pin8.port, pin8.pin, 0);
+            MAP_SPITransfer(GSPI_BASE, 0, &data0, pin8.pin, SPI_CS_ENABLE);
+            MAP_SPITransfer(GSPI_BASE, 0, &data1, pin8.pin, SPI_CS_DISABLE);
+            GPIOPinWrite(pin8.port, pin8.pin, pin8.pin);
+            unsigned short data = 0x1f & data0;
+            data = (data << 5) | ((0xf8 & data1) >> 3);
+
+            Report("%d\n\r", data);
+
+            return data;
+        }
+}

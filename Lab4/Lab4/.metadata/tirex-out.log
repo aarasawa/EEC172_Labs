@@ -1,0 +1,58 @@
+-----TI-REX started at Sat May 07 2022 19:26:26 GMT-0700 (Pacific Daylight Time)
+Sun, 08 May 2022 02:26:28 GMT connect deprecated multipart: use parser (multiparty, busboy, formidable) npm module instead at node_modules\connect\lib\middleware\bodyParser.js:56:20
+Sun, 08 May 2022 02:26:28 GMT connect deprecated limit: Restrict request size at location of read at node_modules\connect\lib\middleware\multipart.js:86:15
+Sun, 08 May 2022 02:26:28 GMT connect deprecated methodOverride: use method-override npm module instead at app.js:555:21
+me)
+2022-05-08T02:26:26.504Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\app.js:231:12:initApp() [
+    "-----TI-REX started at Sat May 07 2022 19:26:26 GMT-0700 (Pacific Daylight Time)"
+]
+2022-05-08T02:26:28.121Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\app.js:278:12:initApp() [
+    "Version: 3.0.0"
+]
+2022-05-08T02:26:28.121Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:161:12:Function.Vars.createDirs() [
+    "content dir: c:\\ti\\tirex-content"
+]
+2022-05-08T02:26:28.122Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:165:12:Function.Vars.createDirs() [
+    "db dir: C:\\Users\\jiawe\\ti\\tirex-localserver-3.0.0\\.db"
+]
+2022-05-08T02:26:28.122Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:170:12:Function.Vars.createDirs() [
+    "db logs dir: C:\\Users\\jiawe\\ti\\tirex-localserver-3.0.0\\.db\\logs"
+]
+2022-05-08T02:26:28.123Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:175:12:Function.Vars.createDirs() [
+    "sitemap dir: C:\\Users\\jiawe\\ti\\tirex-localserver-3.0.0\\.db\\sitemap"
+]
+2022-05-08T02:26:28.123Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:180:12:Function.Vars.createDirs() [
+    "downloads dir: C:\\Users\\jiawe\\ti\\tirex-localserver-3.0.0\\.downloads"
+]
+2022-05-08T02:26:28.123Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\vars.js:185:12:Function.Vars.createDirs() [
+    "user config dir: C:\\Users\\jiawe\\ti\\tirex-localserver-3.0.0"
+]
+2022-05-08T02:26:28.130Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\rexdb\lib\rexdb-split.js:49:12:RexDBSplit.use() [
+    "DB: use() called with[]"
+]
+2022-05-08T02:26:28.131Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\rexdb\lib\rexdb-split.js:83:16:() [
+    "DB: status {}"
+]
+2022-05-08T02:26:28.589Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\localserver.js:50:12:logInfo() [
+    "localserver",
+    "Starting up local server ..."
+]
+2022-05-08T02:26:28.590Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\localserver.js:50:12:logInfo() [
+    "localserver",
+    "CCS host: http://localhost:27544/"
+]
+2022-05-08T02:26:28.597Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\localserver.js:50:12:logInfo() [
+    "localserver",
+    "Connecting to remote server host: https://dev.ti.com/tirex"
+]
+2022-05-08T02:26:28.617Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\app.js:2317:16:Server.<anonymous>() [
+    "Express server listening on port 1112"
+]
+2022-05-08T02:26:29.087Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\localserver.js:50:12:logInfo() [
+    "localserver",
+    "Cannot connect to remote server host: https://dev.ti.com/tirex"
+]
+2022-05-08T02:26:29.087Z INFO DAEMON tirex C:\ti\ccsv7\tirex\ti-rex-core\lib\localserver.js:50:12:logInfo() [
+    "localserver",
+    "Reason: For CCS 9.0: Go to CCS Help Menu -> Check for Updates and update to CCS9.0.1.................................... For CCS 7.x and 8.x: See update instructions here http://software-dl.ti.com/ccs/esd/documents/ccs_tirex_update.html"
+]

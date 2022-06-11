@@ -1,0 +1,17 @@
+
+**** Build of configuration Release for project HI ****
+
+"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k all 
+'Building target: HI.out'
+'Invoking: ARM Linker'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.0.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=fpalib -me -Ooff --define=ccs --define=NON_NETWORK --define=cc3200 -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"HI.map" --heap_size=0x800 --stack_size=0x800 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.0.LTS/lib" -i"C:/ti/CC3200SDK_1.3.0/cc3200-sdk/driverlib/ccs/Release" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.0.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="HI_linkInfo.xml" --rom_model -o "HI.out" "./main.obj" "./pin_mux_config.obj" "./pinmux.obj" "./startup_ccs.obj" "./timer_if.obj" "./uart_if.obj" "../cc3200v1p32.cmd"  -llibc.a -ldriverlib.a 
+<Linking>
+error #10056: symbol "PinMuxConfig" redefined: first defined in "./pin_mux_config.obj"; redefined in "./pinmux.obj"
+error #10010: errors encountered during linking; "HI.out" not built
+
+>> Compilation failure
+makefile:146: recipe for target 'HI.out' failed
+gmake: *** [HI.out] Error 1
+gmake: Target 'all' not remade because of errors.
+
+**** Build Finished ****
